@@ -1,0 +1,70 @@
+# unet, ce_net, MGU_Net, R2U_Net, y_net, 
+# unet_monai, unet_imagenet, swin_unet, swin_unet_custom, swinUNETR, basicunet_monai, 
+# relaynet
+model_name: unet
+
+unet_encoder: resnet34
+activation_unet: "LeakyReLU"
+
+unet_monai_architecture:
+  feature_start: 16
+  layers: 4
+  dropout: 0.1
+  kernel_size: 5
+  num_res_units: 2
+  norm: batch
+
+unet_architecutre:
+  bilinear: False
+  dropout: 0.1
+  feature_start: 16
+  kernel_size: 5
+  layers: 4
+  padding: 2
+  stride: 1
+
+swin_unet_custom_architecture:
+  embed_dim: 24
+  depths: [2, 2, 2, 2]
+  num_heads: [2, 4, 8, 16]
+  window_size: 8
+  drop_path_rate: 0.1
+
+paths:
+  data_base: dataset/
+  train_imgdir: train/Imges/ # images_patches, images_slices
+  train_mskdir: train/Masks/ # masks_patches, masks_slices
+  val_imgdir: val/Imges/
+  val_mskdir: val/Masks/
+  test_imgdir: val/Imges/
+  test_mskdir: val/Masks/
+  save_testimg: preds/Images/
+  save_testmsk: preds/Masks/
+  save_testpred: preds/Preds/
+
+hyperparameters:
+  loss_fn: wce_dice #wce_dice, dice_loss, dice_focal_loss, ce, log_cosh_dice
+  optimizer: adam # sgd, adam
+  batch_size: 32
+  num_epochs: 400
+  lr: 0.001
+  b1: 0.9
+  b2: 0.999
+  weight_decay: 0.00004
+  scheduler:
+    type: step # step, cosine, exponential
+    gamma: 0.8
+    step: 30
+  n_gpus: 1
+
+general:
+  device: 'cuda' # 'cpu'
+  pretrain: False
+  checkpoint: False
+  init_weights: <log dir>/checkpoints/weights.pth
+  n_classes: 1
+  classes: ['RET']
+  img_sizeh: 256
+  img_sizew: 256
+  channels: 1
+  img_type: slices

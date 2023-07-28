@@ -1,0 +1,11 @@
+pretrained/
+dataset/
+dataset1/
+dataset2/
+__pycache__/
+logs/
+resulsts_oct/
+.vscode/
+*.csv
+*.svg
+*.png
